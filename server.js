@@ -6,7 +6,7 @@ const app = express();
 // configure server settings
 require('dotenv').config();
 // establish a connection to MongoDB
-// This is DanielJS's DB Connection String
+
 const DATABASE_URL = process.env.DATABASE_URL;
 // client connection method
 mongoose.connect(DATABASE_URL);
