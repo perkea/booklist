@@ -25,12 +25,16 @@ app.use(express.urlencoded({
 }));
 // mount our routes
 // INDEX ROUTE
-app.get("/books", (req, res)=>{
-res.send("index");
+app.get("/books", (req, res) => {
+    Book.find({}, (error, allBooks) => {
+        res.render("index.ejs", {
+            books: allBooks,
+        })
+    });
 });
 //new
-app.get("/books/new", (req, res)=>{
-res.render("new.ejs");
+app.get("/books/new", (req, res) => {
+    res.render("new.ejs");
 });
 
 //create route
@@ -41,14 +45,25 @@ app.post("/books", (req, res) => {
     } else {
         req.body.completed = false;
     }
-Book.create(req.body,(error,createdBook)=>{
-    //You can also use create() to define the model instance at the same time 
-    //as you save it. The callback will return an error for the first argument and the newly-created model instance for the second argument.
-    console.log("created book", createdBook);
-res.send(createdBook);
-})
+    Book.create(req.body, (error, createdBook) => {
+        //You can also use create() to define the model instance at the same time 
+        //as you save it. The callback will return an error for the first argument and the newly-created model instance for the second argument.
+
+     
+        res.redirect("/books");
+      
+    })
+  
 });
 
+//Show route
+app.get("/books/:id", (req, res)=>{
+Book.findById(req.params.id, (error, foundBook)=>{
+res.render("show.ejs", {
+    book:foundBook,
+});
+});
+});
 
 // UPDATE ROUTE
 
